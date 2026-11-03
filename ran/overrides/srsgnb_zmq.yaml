@@ -1,0 +1,15 @@
+services:
+  srsgnb_zmq:
+    image: docker_srsran
+    container_name: srsgnb_zmq
+    stdin_open: true
+    tty: true
+    privileged: true
+    network_mode: host
+    volumes:
+      - ./srsran:/mnt/srsran
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=gnb_zmq

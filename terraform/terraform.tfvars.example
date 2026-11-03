@@ -1,0 +1,8 @@
+# Copy to terraform.tfvars and fill in. terraform.tfvars is git-ignored.
+# aws_region       = "eu-north-1"
+# instance_type    = "m7i-flex.large"
+
+# Generate with: wg genkey | tee aws.key | wg pubkey > aws.pub
+aws_wg_private_key = "<AWS_WG_PRIVATE_KEY>"
+# Public key of the home machine (wg pubkey < home.key)
+home_wg_public_key = "<HOME_WG_PUBLIC_KEY>"

@@ -1,0 +1,23 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+*.tfplan
+
+# Keys and secrets
+*.pem
+*.key
+*.pub
+id_rsa*
+.env
+.env.*
+!env.example
+
+# RAN working copy created by ran/setup.sh
+ran/docker_open5gs/
+
+# Logs
+*.log
