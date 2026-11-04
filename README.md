@@ -97,12 +97,3 @@ End-to-end run of this setup: srsRAN gNB and srsUE at home, Open5GS core on AWS,
 ![gNB console metrics](docs/poc/6-gnb-metrics.png)
 
 ![gNB throughput metrics](docs/poc/7-gnb-metrics-throughput.png)
-
-## Roadmap
-- [ ] Remote Terraform state (S3 + DynamoDB lock) instead of local state
-- [ ] Provision the test subscriber automatically (mongo/`open5gs-dbctl`) from user data
-- [ ] Generate WireGuard keys / home `wg0.conf` automatically, keep secrets in SSM Parameter Store
-- [ ] CI: `terraform fmt/validate`, `shellcheck`, secret scanning on every push
-- [ ] Multiple UEs and a second gNB; slicing (SST/SD) experiments
-- [ ] Monitoring: Prometheus/Grafana for core metrics reachable over the VPN
-- [ ] Real radio (USRP/bladeRF) path alongside ZMQ
