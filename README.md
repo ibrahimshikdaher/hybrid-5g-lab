@@ -66,6 +66,36 @@ Check `docker logs srsue_5g_zmq` for a PDU session, then test with `ping -I tun_
 cd terraform && terraform destroy
 ```
 
+## Proof of concept
+
+End-to-end run of this setup: srsRAN gNB and srsUE at home, Open5GS core on AWS, connected over WireGuard (`10.200.0.2` ↔ `10.200.0.1`).
+
+**1. gNB connects to the AMF on AWS over the tunnel (N2/SCTP)**: `N2: Connection to AMF on 10.200.0.1:38412 completed`
+
+![gNB N2 connected](docs/poc/1-gnb-n2-connected.webp)
+
+**2. AMF accepts the gNB and registers the UE** (IMSI `001011234567895`, DNN `internet`, S-NSSAI SST 1)
+
+![AMF UE registration](docs/poc/2-amf-ue-registration.png)
+
+**3. UE attaches over ZMQ**: random access, RRC connected, PDU session established with IP `192.168.100.2`
+
+![UE attach and PDU session](docs/poc/3-ue-attach-pdu-session.webp)
+
+**4. UPF creates the session and opens GTP-U (N3) to the gNB at `10.200.0.2:2152`**
+
+![UPF session and GTP-U](docs/poc/4-upf-session-gtp.webp)
+
+**5. User-plane traffic reaches the internet through the AWS core**: 0% packet loss, ~85 ms RTT
+
+![UE ping 8.8.8.8](docs/poc/5-ue-ping-internet.png)
+
+**6–7. gNB metrics**: CQI 15, MCS 28, no HARQ errors (`nok` 0); DL up to ~20 Mbit/s and UL up to ~27 Mbit/s
+
+![gNB console metrics](docs/poc/6-gnb-metrics.png)
+
+![gNB throughput metrics](docs/poc/7-gnb-metrics-throughput.png)
+
 ## Roadmap
 - [ ] Remote Terraform state (S3 + DynamoDB lock) instead of local state
 - [ ] Provision the test subscriber automatically (mongo/`open5gs-dbctl`) from user data
