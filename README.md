@@ -92,6 +92,8 @@ End-to-end run of this setup: srsRAN gNB and srsUE at home, Open5GS core on AWS,
 
 **6–7. gNB metrics**: CQI 15, MCS 28, no HARQ errors (`nok` 0); DL up to ~20 Mbit/s and UL up to ~27 Mbit/s
 
+> **Throughput limit:** the radio link itself is not the limit here: CQI 15 / MCS 28 with no errors means the simulated ZMQ channel is clean. All user-plane traffic goes through the WireGuard tunnel to the UPF on AWS and back, so the DL/UL rates above are capped by the bandwidth of the home internet connection.
+
 ![gNB console metrics](docs/poc/6-gnb-metrics.png)
 
 ![gNB throughput metrics](docs/poc/7-gnb-metrics-throughput.png)
