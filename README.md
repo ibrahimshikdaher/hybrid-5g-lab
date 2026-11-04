@@ -46,11 +46,19 @@ Add the subscriber (IMSI `001011234567895`, K/OP from your `.env`) in the WebUI 
 cd ran
 ./setup.sh                    # clones upstream into ran/docker_open5gs and overlays changes
 cd docker_open5gs
-cd srslte && docker build -t docker_srslte . && cd ..
-cd srsran && docker build -t docker_srsran . && cd ..
+
+# Prebuilt srsRAN images from upstream (GitHub Container Registry).
+# The compose files use the short names, so tag them after pulling.
+docker pull ghcr.io/herlesupreeth/docker_srslte:master
+docker tag ghcr.io/herlesupreeth/docker_srslte:master docker_srslte
+docker pull ghcr.io/herlesupreeth/docker_srsran:master
+docker tag ghcr.io/herlesupreeth/docker_srsran:master docker_srsran
+
 docker compose -f srsgnb_zmq.yaml up -d
 docker compose -f srsue_5g_zmq.yaml up -d
 ```
+Note: `:master` images follow upstream's latest build, not the commit pinned in `ran/UPSTREAM`, and they include the USRP firmware that `overrides/srslte/Dockerfile` skips (harmless with ZMQ). To build from the pinned sources instead, run `docker build -t docker_srslte .` in `srslte/` and `docker build -t docker_srsran .` in `srsran/`.
+
 Check `docker logs srsue_5g_zmq` for a PDU session, then test with `ping -I tun_srsue 8.8.8.8`.
 
 ### Tear down
